@@ -1,0 +1,86 @@
+﻿@page "/"
+@inherits IndexBase
+
+@*履歴のコンテキストメニュー*@
+<ContextMenu Id="historyMenu">
+    <Item OnClick="@OnHistoryMenuDeleteClick">削除</Item>
+</ContextMenu>
+
+@if(!string.IsNullOrEmpty(Message))
+{
+    <BSAlert Color="Color.Danger" IsDismissible="true" OnDismiss="@OnDismiss">
+        <strong>@Message</strong>
+    </BSAlert>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            @*式を表示*@
+            <div class="row">
+                <div class="col-12 rounded-lg calbtn ">@Formula</div>
+            </div>
+            @*結果を表示*@
+            <div class="row">
+                <div class="col-12 rounded-lg num">@Result</div>
+            </div>
+
+            @*ボタン類*@
+            <div class="row">
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>Formula+="(")">％</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="ClearEntry">CE</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="AllClear">C</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="OnBackSapce">BS</div>
+            </div>
+            <div class="row">
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnSpecialOperatorsButtonClick("recp"))">1/x</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnSpecialOperatorsButtonClick("pow"))">X&sup2;</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnSpecialOperatorsButtonClick("sqrt"))">√</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnOperatorsButtonClick("/"))">÷</div>
+            </div>
+            <div class="row">
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("7"))">7</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("8"))">8</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("9"))">9</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnOperatorsButtonClick("*"))">×</div>
+            </div>
+            <div class="row">
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("4"))">4</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("5"))">5</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("6"))">6</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnOperatorsButtonClick("-"))">-</div>
+            </div>
+            <div class="row">
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("1"))">1</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("2"))">2</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnNumberButtonClick("3"))">3</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnOperatorsButtonClick("+"))">+</div>
+            </div>
+            <div class="row">
+                <div class="col-6 rounded-lg calbtn" @onclick="@(_=>OnNumberButtonClick("0"))">0</div>
+                <div class="col-3 rounded-lg calbtn" @onclick="@(_=>OnNumberButtonClick("."))">.</div>
+                <div class="col-3 rounded-lg calbtn" @onclick="Calc">=</div>
+            </div>
+        </div>
+        <div class="col-6">
+            <TabSet>
+                <Tab title="履歴">
+                    <div class="overflow-auto h-75">
+                        @foreach (var (val, i) in CalculationHistories.Select((val, i) => (val, i)))
+                        {
+                            <ContextMenuTrigger MenuId="historyMenu" Id="@("historyMenu" + i)" Data="@val">
+                                <div class="history border-top" @onclick="@(_ => OnHistoryClick(i))">
+                                    <div>操作時間：@val.CreatedTime</div>
+                                    <div>式：@val.Formula</div>
+                                    <div>結果：@val.Result</div>
+                                </div>
+                            </ContextMenuTrigger>
+                        }
+                    </div>
+                </Tab>
+                <Tab title="メモリ">
+
+                </Tab>
+            </TabSet>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿<CascadingValue Value=this>
+    <ul class="nav nav-tabs">
+        @ChildContent
+    </ul>
+</CascadingValue>
+
+<div class="nav-tabs-body p-4">
+    @ActiveTab?.ChildContent
+</div>
