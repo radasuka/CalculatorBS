@@ -26,7 +26,7 @@
 
             @*ボタン類*@
             <div class="row">
-                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>Formula+="(")">％</div>
+                <div class="col-3 rounded-lg calbtn " @onclick="@(_=>Per())">％</div>
                 <div class="col-3 rounded-lg calbtn " @onclick="ClearEntry">CE</div>
                 <div class="col-3 rounded-lg calbtn " @onclick="AllClear">C</div>
                 <div class="col-3 rounded-lg calbtn " @onclick="OnBackSapce">BS</div>
@@ -56,7 +56,8 @@
                 <div class="col-3 rounded-lg calbtn " @onclick="@(_=>OnOperatorsButtonClick("+"))">+</div>
             </div>
             <div class="row">
-                <div class="col-6 rounded-lg calbtn" @onclick="@(_=>OnNumberButtonClick("0"))">0</div>
+                <div class="col-3 rounded-lg calbtn" @onclick="Negate">±</div>
+                <div class="col-3 rounded-lg calbtn" @onclick="@(_=>OnNumberButtonClick("0"))">0</div>
                 <div class="col-3 rounded-lg calbtn" @onclick="@(_=>OnNumberButtonClick("."))">.</div>
                 <div class="col-3 rounded-lg calbtn" @onclick="Calc">=</div>
             </div>

@@ -190,6 +190,24 @@ namespace CalculatorBS.Pages
             _isClear = false;
         }
 
+        protected void Per()
+        {
+            if(decimal.TryParse(Result, out var result))
+            {
+                result /= 100;
+                Result = result.ToString();
+            }
+        }
+
+        protected void Negate()
+        {
+            if (decimal.TryParse(Result, out var result))
+            {
+                result = decimal.Negate(result);
+                Result = result.ToString();
+            }
+        }
+
         /// <summary>
         /// 逆数、二乗、平方根ボタンクリック
         /// </summary>
