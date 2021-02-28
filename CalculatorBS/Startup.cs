@@ -32,12 +32,11 @@ namespace CalculatorBS
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         sqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
-                    }
-                    //providerOptions => providerOptions.CommandTimeout(120)
-                    )
+                    })
             );
             // 履歴データベースサービス
             services.AddScoped<CalculationDataService>();
+            // Bootstrap
             services.AddBootstrapCss();
             // コンテキストメニュー
             services.AddBlazorContextMenu();

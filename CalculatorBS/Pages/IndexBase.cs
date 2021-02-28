@@ -5,6 +5,7 @@ using System.Linq;
 using BlazorContextMenu;
 using CalculatorBS.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
@@ -54,13 +55,15 @@ namespace CalculatorBS.Pages
         [Inject]
         protected CalculationDataService CalculationDataService { get; set; }
         /// <summary>
-        /// 
+        /// js
         /// </summary>
         [Inject]
         protected IJSRuntime JSInterop { get; set; }
-
+        /// <summary>
+        /// ログ
+        /// </summary>
         [Inject]
-        private ILogger<IndexBase> _logger { get; set; }
+        private ILogger<IndexBase> Logger { get; set; }
 
         /// <summary>
         /// 初期化
@@ -150,13 +153,22 @@ namespace CalculatorBS.Pages
                 await CalculationDataService.SaveChangesAsync();
 
                 CalculationHistories.Add(insertHistory);
-                StateHasChanged();
+            }
+            catch(DbUpdateException e)
+            {
+                Message = "履歴保存エラー";
+                Logger.LogError(e.Message);
+                if(e.InnerException != null)
+                {
+                    Logger.LogError(e.InnerException.Message);
+                }
             }
             catch (Exception e)
             {
                 Message = "計算エラー";
-                _logger.LogError(e.Message);
+                Logger.LogError(e.Message);
             }
+            StateHasChanged();
         }
 
         /// <summary>
@@ -190,6 +202,9 @@ namespace CalculatorBS.Pages
             _isClear = false;
         }
 
+        /// <summary>
+        /// パーセントボタンクリック
+        /// </summary>
         protected void Per()
         {
             if(decimal.TryParse(Result, out var result))
@@ -199,6 +214,9 @@ namespace CalculatorBS.Pages
             }
         }
 
+        /// <summary>
+        /// ±ボタンクリック
+        /// </summary>
         protected void Negate()
         {
             if (decimal.TryParse(Result, out var result))
